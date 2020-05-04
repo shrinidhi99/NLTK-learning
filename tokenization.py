@@ -1,30 +1,43 @@
 import nltk
+import re
 from nltk.stem import PorterStemmer, WordNetLemmatizer
 from nltk.corpus import stopwords
+from sklearn.feature_extraction.text import CountVectorizer
 
 
 def stem_sentence():
     # stemming
     stemmer = PorterStemmer()
+    corpus = []
 
     for i in range(len(sentences)):
-        words = nltk.word_tokenize(sentences[i])
-        words = [stemmer.stem(word) for word in words if word not in set(
+        review = re.sub('[^a-zA-Z]', ' ', sentences[i])
+        review = review.lower()
+        review = review.split()
+        review = [stemmer.stem(word) for word in review if not word in set(
             stopwords.words('english'))]
-        sentences[i] = ' '.join(words)
-        print(sentences[i])
+        review = ' '.join(review)
+        corpus.append(review)
+
+    return corpus
+
 
 def lemmatize_sentence():
 
     # lemmatization
     lemmatizer = WordNetLemmatizer()
+    corpus = []
 
     for i in range(len(sentences)):
-        words = nltk.word_tokenize(sentences[i])
-        words = [lemmatizer.lemmatize(word) for word in words if word not in set(
+        review = re.sub('[^a-zA-Z0-9]', ' ', sentences[i])
+        review = review.lower()
+        review = review.split()
+        review = [lemmatizer.lemmatize(word) for word in review if word not in set(
             stopwords.words('english'))]
-        sentences[i] = ' '.join(words)
-        print(sentences[i])
+        review = ' '.join(review)
+        corpus.append(sentences[i])
+
+    return corpus
 
 
 paragraph = """I have three visions for India. In 3000 years of our history, people from all over 
@@ -57,8 +70,16 @@ sentences = nltk.sent_tokenize(paragraph)
 choice = int(input('Enter:\n1.Stemming\n2.Lemmatization\n'))
 
 if(choice == 1):
-    stem_sentence()
+    # creating the Bag of Words model
+    cv = CountVectorizer(max_features=1500)
+    X = cv.fit_transform(stem_sentence()).toarray()
+    print(X)
+
 elif(choice == 2):
-    lemmatize_sentence()
+    # creating the Bag of Words model
+    cv = CountVectorizer(max_features=1500)
+    X = cv.fit_transform(stem_sentence()).toarray()
+    print(X)
+
 else:
     print('Wrong choice')
