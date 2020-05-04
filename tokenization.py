@@ -2,7 +2,7 @@ import nltk
 import re
 from nltk.stem import PorterStemmer, WordNetLemmatizer
 from nltk.corpus import stopwords
-from sklearn.feature_extraction.text import CountVectorizer
+from sklearn.feature_extraction.text import CountVectorizer, TfidfVectorizer
 
 
 def stem_sentence():
@@ -70,16 +70,29 @@ sentences = nltk.sent_tokenize(paragraph)
 choice = int(input('Enter:\n1.Stemming\n2.Lemmatization\n'))
 
 if(choice == 1):
-    # creating the Bag of Words model
-    cv = CountVectorizer(max_features=1500)
-    X = cv.fit_transform(stem_sentence()).toarray()
-    print(X)
+    ch = int(input('Enter\n1.Count Vectorizer\n2.TF-IDF Vectorizer\n'))
+    if(ch == 1):
+        # creating the Bag of Words model
+        cv = CountVectorizer(max_features=1500)
+        X = cv.fit_transform(stem_sentence()).toarray()
+        print(X)
+    elif(ch == 2):
+        # creating the TF-IDF model
+        cv = TfidfVectorizer(max_features=1500)
+        X = cv.fit_transform(stem_sentence()).toarray()
+        print(X)
 
 elif(choice == 2):
-    # creating the Bag of Words model
-    cv = CountVectorizer(max_features=1500)
-    X = cv.fit_transform(stem_sentence()).toarray()
-    print(X)
-
+    ch = int(input('Enter\n1.Count Vectorizer\n2.TF-IDF Vectorizer\n'))
+    if(ch == 1):
+        # creating the Bag of Words model
+        cv = CountVectorizer(max_features=1500)
+        X = cv.fit_transform(lemmatize_sentence()).toarray()
+        print(X)
+    elif(ch == 2):
+        # creating the TF-IDF model
+        cv = TfidfVectorizer(max_features=1500)
+        X = cv.fit_transform(lemmatize_sentence()).toarray()
+        print(X)
 else:
     print('Wrong choice')
