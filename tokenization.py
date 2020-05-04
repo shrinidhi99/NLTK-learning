@@ -1,6 +1,31 @@
 import nltk
-from nltk.stem import PorterStemmer
+from nltk.stem import PorterStemmer, WordNetLemmatizer
 from nltk.corpus import stopwords
+
+
+def stem_sentence():
+    # stemming
+    stemmer = PorterStemmer()
+
+    for i in range(len(sentences)):
+        words = nltk.word_tokenize(sentences[i])
+        words = [stemmer.stem(word) for word in words if word not in set(
+            stopwords.words('english'))]
+        sentences[i] = ' '.join(words)
+        print(sentences[i])
+
+def lemmatize_sentence():
+
+    # lemmatization
+    lemmatizer = WordNetLemmatizer()
+
+    for i in range(len(sentences)):
+        words = nltk.word_tokenize(sentences[i])
+        words = [lemmatizer.lemmatize(word) for word in words if word not in set(
+            stopwords.words('english'))]
+        sentences[i] = ' '.join(words)
+        print(sentences[i])
+
 
 paragraph = """I have three visions for India. In 3000 years of our history, people from all over 
                the world have come and invaded us, captured our lands, conquered our minds. 
@@ -29,12 +54,11 @@ paragraph = """I have three visions for India. In 3000 years of our history, peo
 # tokenizing sentences
 sentences = nltk.sent_tokenize(paragraph)
 
-stemmer = PorterStemmer()
+choice = int(input('Enter:\n1.Stemming\n2.Lemmatization\n'))
 
-# stemming
-for i in range(len(sentences)):
-    words = nltk.word_tokenize(sentences[i])
-    words = [stemmer.stem(word) for word in words if word not in set(
-        stopwords.words('english'))]
-    sentences[i] = ' '.join(words)
-    print(sentences[i])
+if(choice == 1):
+    stem_sentence()
+elif(choice == 2):
+    lemmatize_sentence()
+else:
+    print('Wrong choice')
