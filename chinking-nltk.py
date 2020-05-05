@@ -28,4 +28,16 @@ def process_content():
         print(str(e))
 
 
+def named_entity_recognition():
+    try:
+        for i in tokenized[5:]:
+            words = nltk.word_tokenize(i)
+            tagged = nltk.pos_tag(words)
+            namedEnt = nltk.ne_chunk(tagged, binary=True)
+            namedEnt.draw()
+    except Exception as e:
+        print(str(e))
+
+
 process_content()
+named_entity_recognition()
